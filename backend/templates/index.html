@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 HamidCognition v0 - پیش‌بینی عددی حداکثری</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            color: #c5c6c7;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(26, 26, 46, 0.6);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        h1 { color: #66fcf1; font-size: 2.5rem; margin-bottom: 10px; }
+        .subtitle { color: #45a29e; font-size: 1.1rem; }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(31, 40, 51, 0.8);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; animation: pulse 2s infinite; background: #66fcf1; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        .card {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(102, 252, 241, 0.1);
+        }
+        .price-display { text-align: center; padding: 30px; background: rgba(102, 252, 241, 0.05); border-radius: 15px; margin-bottom: 20px; }
+        .current-price { font-size: 3.5rem; color: #66fcf1; font-weight: 700; }
+        .prediction-card { background: rgba(31, 40, 51, 0.6); padding: 20px; border-radius: 15px; border-left: 4px solid #66fcf1; }
+        .prediction-price { font-size: 2.5rem; color: #fff; font-weight: 700; margin: 10px 0; }
+        .direction-up { color: #00ff88; }
+        .direction-down { color: #ff4b5c; }
+        .pst-container { display: flex; justify-content: space-around; margin: 20px 0; }
+        .pst-item { text-align: center; flex: 1; padding: 0 10px; }
+        .pst-bar { width: 100%; height: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; margin-top: 10px; overflow: hidden; }
+        .pst-fill { height: 100%; background: #66fcf1; transition: width 1s ease; }
+        .phase-display {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .phase-rupture { background: #ff4b5c; color: white; }
+        .phase-synthesis { background: #66fcf1; color: #0f0f1e; }
+        .phase-unstable { background: #f39c12; color: white; }
+        .phase-steady { background: #3498db; color: white; }
+        .loading { text-align: center; padding: 50px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 HamidCognition v0</h1>
+            <p class="subtitle">ورژن صفر حداکثری: پیش‌بینی عددی با مدل GradientBoosting و موتور P/S/T</p>
+        </header>
+
+        <div class="status-bar">
+            <div><span class="status-dot"></span> <span id="statusText">در حال دریافت داده...</span></div>
+            <div id="lastUpdate">--:--:--</div>
+        </div>
+
+        <div id="loadingScreen" class="loading">در حال تحلیل بازار و آموزش مدل...</div>
+
+        <div id="mainContent" style="display: none;">
+            <div class="card" style="margin-bottom: 20px;">
+                <div class="price-display">
+                    <div class="current-price" id="currentPrice">0.00000</div>
+                    <div style="color: #45a29e;">EUR/USD - قیمت لحظه‌ای</div>
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h2 style="color: #66fcf1; margin-bottom: 20px;">📊 پیش‌بینی عددی دقیق</h2>
+                    <div id="predictionContainer"></div>
+                </div>
+
+                <div class="card">
+                    <h2 style="color: #66fcf1; margin-bottom: 20px;">🧠 وضعیت شناختی P/S/T</h2>
+                    <div class="pst-container">
+                        <div class="pst-item">
+                            <div>P (نفوذ)</div>
+                            <div id="pValue" style="font-size: 1.5rem; font-weight: 700;">0.00</div>
+                            <div class="pst-bar"><div id="pBar" class="pst-fill"></div></div>
+                        </div>
+                        <div class="pst-item">
+                            <div>S (اتصال)</div>
+                            <div id="sValue" style="font-size: 1.5rem; font-weight: 700;">0.00</div>
+                            <div class="pst-bar"><div id="sBar" class="pst-fill"></div></div>
+                        </div>
+                        <div class="pst-item">
+                            <div>T (تثبیت)</div>
+                            <div id="tValue" style="font-size: 1.5rem; font-weight: 700;">0.00</div>
+                            <div class="pst-bar"><div id="tBar" class="pst-fill"></div></div>
+                        </div>
+                    </div>
+                    <div id="phaseDisplay" class="phase-display">STEADY</div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                        <span>انرژی شناختی: <b id="energyValue">0.00</b></span>
+                        <span>اطمینان مدل: <b id="confidenceValue">0%</b></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function update() {
+            fetch('/api/data')
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.prediction) return;
+                    const p = data.prediction;
+                    
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    document.getElementById('mainContent').style.display = 'block';
+                    document.getElementById('statusText').textContent = 'سیستم فعال (v0 حداکثری)';
+                    
+                    const time = new Date(p.timestamp);
+                    document.getElementById('lastUpdate').textContent = time.toLocaleTimeString('fa-IR');
+                    document.getElementById('currentPrice').textContent = p.current_price.toFixed(5);
+                    
+                    const diff = p.predicted_price - p.current_price;
+                    const dir = diff > 0 ? 'صعودی 🟢' : 'نزولی 🔴';
+                    const dirClass = diff > 0 ? 'direction-up' : 'direction-down';
+                    
+                    document.getElementById('predictionContainer').innerHTML = `
+                        <div class="prediction-card">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>افق ${p.horizon_mins} دقیقه آینده</span>
+                                <span class="${dirClass}">${dir}</span>
+                            </div>
+                            <div class="prediction-price">${p.predicted_price.toFixed(5)}</div>
+                            <div style="font-size: 0.9rem; color: #888;">
+                                تغییر تخمینی: ${(diff * 10000).toFixed(1)} پیپ
+                            </div>
+                        </div>
+                    `;
+                    
+                    const cs = p.cog_state;
+                    document.getElementById('pValue').textContent = cs.P.toFixed(3);
+                    document.getElementById('sValue').textContent = cs.S.toFixed(3);
+                    document.getElementById('tValue').textContent = cs.T.toFixed(3);
+                    document.getElementById('pBar').style.width = (cs.P * 100) + '%';
+                    document.getElementById('sBar').style.width = (cs.S * 100) + '%';
+                    document.getElementById('tBar').style.width = (cs.T * 100) + '%';
+                    document.getElementById('energyValue').textContent = cs.energy.toFixed(3);
+                    document.getElementById('confidenceValue').textContent = p.confidence.toFixed(1) + '%';
+                    
+                    const phaseDiv = document.getElementById('phaseDisplay');
+                    phaseDiv.textContent = p.phase.replace('_', ' ');
+                    phaseDiv.className = 'phase-display ' + 'phase-' + p.phase.split('_')[0].toLowerCase();
+                });
+        }
+        setInterval(update, 5000);
+        update();
+    </script>
+</body>
+</html>
