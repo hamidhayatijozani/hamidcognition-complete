@@ -1,13 +1,9 @@
-# backend/main.py
+# main.py - مدیریت چرخه حیات سیستم
 import time
 import threading
 from datetime import datetime
 import pandas as pd
-import sys
 import os
-
-# اضافه کردن مسیر ریشه برای دسترسی به core
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import *
 from market_feed import get_candles

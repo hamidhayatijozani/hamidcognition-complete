@@ -1,17 +1,10 @@
-# backend/app.py
+# app.py - فایل اصلی وب‌سایت (شسته و رفته)
 from flask import Flask, render_template, jsonify
-import sys
 import os
-
-# اضافه کردن مسیر فعلی به sys.path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
 from main import system
 from config import PORT, DEBUG
 
-app = Flask(__name__, 
-            template_folder='templates', 
-            static_folder='static')
+app = Flask(__name__)
 
 @app.route('/')
 def index():
@@ -26,4 +19,6 @@ def get_data():
 
 if __name__ == '__main__':
     system.start()
-    app.run(host='0.0.0.0', port=PORT, debug=DEBUG)
+    # استفاده از پورت متغیر محیطی برای سازگاری با تمام پلتفرم‌های Deploy
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
