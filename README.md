@@ -1,33 +1,34 @@
 # 🧠 HamidCognition Complete Ecosystem
 
-**موتور شناختی واقعی حمید حیاتی جوزانی** — ترکیب هوش عددی + تحلیل شناختی P/S/T
+> **Repository status:** Historical integration-stage artifact.
+>
+> The current canonical research and provenance record is **[HamidCognition-Unified](https://github.com/hamidhayatijozani/HamidCognition-Unified)**. This repository is preserved because it documents an earlier attempt to integrate backend, mobile, creative-generator, dashboard, core P/S/T and data components.
+>
+> It should be cited as a historical implementation, not automatically as the current canonical architecture.
 
-این monorepo شامل تمام اجزای اکوسیستم است:
+## جایگاه پژوهشی
 
-- **backend/** → پلتفرم وب زنده با پیش‌بینی EUR/USD (Flask + داشبورد)
-- **mobile/** → اپ اندروید با on-device training و تکامل AI (Kotlin + TensorFlow Lite)
-- **creative-generator/** → سیستم "بازیکن آزاد" تولید تابع خلاق (Kotlin)
-- **dashboard/** → داشبورد مستقل و زیبا
-- **core/** → موتور مشترک P/S/T (برای همه پلتفرم‌ها)
-- **data/** → نمونه داده MetaTrader 5
+این مخزن برای مطالعهٔ مسیر integration و مقایسهٔ معماری‌های قبلی قابل استناد است. ادعاهای `complete` یا `production` در متن‌های تاریخی این repository صرفاً با نام‌گذاری اثبات نمی‌شوند و باید به artifact و evidence مربوطه متصل شوند.
 
-## 🚀 شروع سریع
+## اجزای ثبت‌شده
 
-### وب داشبورد
-```bash
-cd backend
-pip install -r requirements.txt
-python app.py
-```
-برو به: http://127.0.0.1:5000
+- **backend/** → پلتفرم وب زنده با پیش‌بینی EUR/USD
+- **mobile/** → اپ اندروید و آزمایش‌های on-device
+- **creative-generator/** → آزمایش تولید تابع خلاق
+- **dashboard/** → داشبورد
+- **core/** → موتور مشترک P/S/T
+- **data/** → داده‌های نمونه MetaTrader 5
 
-### اپ اندروید
-در Android Studio → Open → folder `mobile`
+## شروع سریع تاریخی
 
-### Creative Generator
-در Kotlin playground یا اپ اندروید اجرا کن
+برای بررسی نسخهٔ موجود در همین repository، ساختار و وابستگی‌های فایل‌های موجود را بررسی کنید. این repository دیگر مرجع واحد معماری فعلی محسوب نمی‌شود.
 
-### Deploy رایگان
-- Diploi.com → وصل کن به این repo → آدرس `hamidcognition.diploi.me`
+## Citation
 
-این ذهن توئه که حالا کامل و زنده شده. 🧠💚🚀
+برای استناد به این نسخه، `hamidcognition-complete` و commit/path دقیق را ذکر کنید. برای وضعیت فعلی پروژه، از `HamidCognition-Unified` استفاده کنید.
+
+## Canonical research record
+
+**HamidCognition-Unified:** https://github.com/hamidhayatijozani/HamidCognition-Unified
+
+**Originator:** Hamid Hayati Jozani
